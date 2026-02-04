@@ -1,0 +1,19 @@
+{
+  "expenses" : [ {
+    "amount" : 10,
+    "date" : "2026-02-04",
+    "description" : "Buy ticket",
+    "id" : 1
+  }, {
+    "amount" : 50,
+    "date" : "2020-02-15",
+    "description" : "Dinner with T",
+    "id" : 3
+  }, {
+    "amount" : 100,
+    "date" : "2026-02-04",
+    "description" : "How are you today",
+    "id" : 4
+  } ],
+  "nextId" : 5
+}
