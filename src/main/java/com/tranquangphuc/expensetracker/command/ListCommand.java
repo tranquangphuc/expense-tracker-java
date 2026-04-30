@@ -26,10 +26,10 @@ public class ListCommand implements Runnable {
             System.out.println("No expenses found.");
         } else {
             System.out.println("Expenses:");
-            System.out.printf("%9s %10s %30s %6s%n", "ID", "Date", "Description", "Amount");
+            System.out.printf("%9s %10s %6s %s%n", "ID", "Date", "Amount", "Description");
             for (Expense expense : expenses) {
-                System.out.printf("%9d %10s %30s %6d%n", expense.getId(), expense.getDate(),
-                        expense.getDescription(), expense.getAmount());
+                System.out.printf("%9d %10s %6d %s%n", expense.getId(), expense.getDate(),
+                        expense.getAmount(), expense.getDescription());
             }
         }
     }
