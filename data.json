@@ -71,6 +71,24 @@
     "date" : "2026-04-30",
     "description" : "Inflating tires",
     "id" : 13
+  }, {
+    "amount" : 1,
+    "category" : "Other",
+    "date" : "2026-04-30",
+    "description" : "Street coffee",
+    "id" : 14
+  }, {
+    "amount" : 2,
+    "category" : "Bike",
+    "date" : "2026-04-30",
+    "description" : "Washing motorbike",
+    "id" : 15
+  }, {
+    "amount" : 2,
+    "category" : "Petrol",
+    "date" : "2026-04-02",
+    "description" : "Refueling motorbike",
+    "id" : 16
   } ],
-  "nextId" : 14
+  "nextId" : 17
 }
