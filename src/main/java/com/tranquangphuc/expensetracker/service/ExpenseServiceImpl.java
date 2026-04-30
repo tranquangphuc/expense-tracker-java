@@ -30,7 +30,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             return repository.find(year, month);
         } else if (year != null) {
             return repository.find(year);
+        } else if (month != null) {
+            year = LocalDate.now().getYear();
+            return repository.find(year, month);
         }
+
         return repository.find();
     }
 
