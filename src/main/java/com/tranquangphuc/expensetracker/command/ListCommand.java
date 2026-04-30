@@ -1,7 +1,7 @@
 package com.tranquangphuc.expensetracker.command;
 
 import java.util.List;
-import com.tranquangphuc.dto.ExpenseQuery;
+import com.tranquangphuc.expensetracker.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
 import com.tranquangphuc.expensetracker.service.ExpenseService;
 import jakarta.inject.Inject;

@@ -2,7 +2,7 @@ package com.tranquangphuc.expensetracker.service;
 
 import java.util.List;
 import java.util.Optional;
-import com.tranquangphuc.dto.ExpenseQuery;
+import com.tranquangphuc.expensetracker.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
 
 public interface ExpenseService {

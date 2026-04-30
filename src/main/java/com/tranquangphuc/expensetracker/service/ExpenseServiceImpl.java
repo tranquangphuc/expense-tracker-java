@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import com.tranquangphuc.dto.ExpenseQuery;
+import com.tranquangphuc.expensetracker.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
 import com.tranquangphuc.expensetracker.repository.ExpenseRepository;
 import jakarta.inject.Inject;

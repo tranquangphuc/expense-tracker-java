@@ -1,4 +1,4 @@
-package com.tranquangphuc.dto;
+package com.tranquangphuc.expensetracker.dto;
 
 import java.util.List;
 
