@@ -1,29 +1,76 @@
 {
   "expenses" : [ {
     "amount" : 10,
+    "category" : "Other",
     "date" : "2026-02-04",
     "description" : "Buy ticket",
     "id" : 1
   }, {
     "amount" : 50,
+    "category" : "Other",
     "date" : "2020-02-15",
     "description" : "Dinner with T",
     "id" : 3
   }, {
     "amount" : 100,
+    "category" : "Other",
     "date" : "2026-02-04",
     "description" : "How are you today",
     "id" : 4
   }, {
     "amount" : 5,
+    "category" : "Other",
     "date" : "2026-04-30",
     "description" : "Pho 24h",
     "id" : 5
   }, {
     "amount" : 4,
+    "category" : "Other",
     "date" : "2026-04-30",
     "description" : "Starbuck",
     "id" : 6
+  }, {
+    "amount" : 2500,
+    "category" : "Food",
+    "date" : "2026-04-30",
+    "description" : "Lunch at restaurant",
+    "id" : 7
+  }, {
+    "amount" : 1500,
+    "category" : "Food",
+    "date" : "2026-04-30",
+    "description" : "Lunch",
+    "id" : 8
+  }, {
+    "amount" : 500,
+    "category" : "Transport",
+    "date" : "2026-04-30",
+    "description" : "Bus ticket",
+    "id" : 9
+  }, {
+    "amount" : 300,
+    "category" : "Other",
+    "date" : "2026-04-30",
+    "description" : "Coffee",
+    "id" : 10
+  }, {
+    "amount" : 200,
+    "category" : "Entertainment",
+    "date" : "2026-04-30",
+    "description" : "Movie ticket",
+    "id" : 11
+  }, {
+    "amount" : 5,
+    "category" : "Petro",
+    "date" : "2026-04-30",
+    "description" : "Refueling the motorbike",
+    "id" : 12
+  }, {
+    "amount" : 1,
+    "category" : "Other",
+    "date" : "2026-04-30",
+    "description" : "Inflating tires",
+    "id" : 13
   } ],
-  "nextId" : 7
+  "nextId" : 14
 }

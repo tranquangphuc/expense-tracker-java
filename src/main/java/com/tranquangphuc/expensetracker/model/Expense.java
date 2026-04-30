@@ -7,6 +7,7 @@ public class Expense {
     private String description;
     private Long amount;
     private LocalDate date;
+    private String category = "Other";
 
     public Expense() {}
 
@@ -15,6 +16,15 @@ public class Expense {
         this.description = description;
         this.amount = amount;
         this.date = date;
+        this.category = "Other";
+    }
+
+    public Expense(Integer id, String description, Long amount, LocalDate date, String category) {
+        this.id = id;
+        this.description = description;
+        this.amount = amount;
+        this.date = date;
+        this.category = category != null ? category : "Other";
     }
 
     public Integer getId() {
@@ -49,6 +59,14 @@ public class Expense {
         this.date = date;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category != null ? category : "Other";
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -77,6 +95,6 @@ public class Expense {
     @Override
     public String toString() {
         return "Expense [id=" + id + ", description=" + description + ", amount=" + amount
-                + ", date=" + date + "]";
+                + ", date=" + date + ", category=" + category + "]";
     }
 }

@@ -2,7 +2,9 @@ package com.tranquangphuc.expensetracker.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import com.tranquangphuc.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
 import com.tranquangphuc.expensetracker.repository.ExpenseRepository;
 import jakarta.inject.Inject;
@@ -13,29 +15,22 @@ public class ExpenseServiceImpl implements ExpenseService {
     ExpenseRepository repository;
 
     @Override
-    public int add(String description, Long amount) {
-        Expense expense = new Expense(null, description, amount, LocalDate.now());
-        return repository.add(expense);
-    }
-
-    @Override
-    public int add(String description, Long amount, LocalDate date) {
-        Expense expense = new Expense(null, description, amount, date);
-        return repository.add(expense);
-    }
-
-    @Override
-    public List<Expense> find(Integer year, Integer month) {
-        if (year != null && month != null) {
-            return repository.find(year, month);
-        } else if (year != null) {
-            return repository.find(year);
-        } else if (month != null) {
-            year = LocalDate.now().getYear();
-            return repository.find(year, month);
+    public Expense add(Expense expense) {
+        Objects.requireNonNull(expense);
+        Objects.requireNonNull(expense.getDescription());
+        Objects.requireNonNull(expense.getAmount());
+        if (expense.getDate() == null) {
+            expense.setDate(LocalDate.now());
         }
+        if (expense.getCategory() == null) {
+            expense.setCategory("Other");
+        }
+        return repository.add(expense);
+    }
 
-        return repository.find();
+    @Override
+    public List<Expense> find(ExpenseQuery query) {
+        return repository.find(query);
     }
 
     @Override
@@ -44,8 +39,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public long summary(Integer year, Integer month) {
-        List<Expense> expenses = find(year, month);
+    public long summary(ExpenseQuery query) {
+        List<Expense> expenses = find(query);
         return expenses.stream().mapToLong(Expense::getAmount).sum();
     }
 

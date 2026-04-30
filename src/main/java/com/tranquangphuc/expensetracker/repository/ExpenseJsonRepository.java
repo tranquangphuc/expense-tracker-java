@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import com.tranquangphuc.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -49,35 +50,45 @@ public class ExpenseJsonRepository implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> find() {
-        List<Expense> result = new ArrayList<>(data.expenses);
-        result.sort(Comparator.comparing(Expense::getDate));
-        return result;
-    }
+    public List<Expense> find(ExpenseQuery query) {
+        if (query == null) {
+            query = new ExpenseQuery();
+        }
 
-    @Override
-    public List<Expense> find(int year) {
+        Integer year = query.getYear();
+        Integer month = query.getMonth();
+        List<String> categories = query.getCategories();
+
         List<Expense> result = data.expenses.stream()
-                .filter(it -> it.getDate() != null && it.getDate().getYear() == year)
+                .filter(expense -> matchesAnyCategory(expense, categories))
+                .filter(expense -> year == null || (expense.getDate() != null && expense.getDate().getYear() == year))
+                .filter(expense -> month == null || (expense.getDate() != null && expense.getDate().getMonthValue() == month))
                 .sorted(Comparator.comparing(Expense::getDate)).toList();
         return result;
     }
 
-    @Override
-    public List<Expense> find(int year, int month) {
-        List<Expense> result = data.expenses.stream()
-                .filter(it -> it.getDate() != null && it.getDate().getYear() == year
-                        && it.getDate().getMonthValue() == month)
-                .sorted(Comparator.comparing(Expense::getDate)).toList();
-        return result;
+    private boolean matchesAnyCategory(Expense expense, List<String> categories) {
+        if (categories == null || categories.isEmpty()) {
+            return true;
+        }
+        String expenseCategory = expense.getCategory();
+        if (expenseCategory == null) {
+            return false;
+        }
+        for (String category : categories) {
+            if (expenseCategory.equals(category)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public int add(Expense expense) {
+    public Expense add(Expense expense) {
         expense.setId(data.nextId++);
         data.expenses.add(expense);
         save();
-        return expense.getId();
+        return expense;
     }
 
     @Override
