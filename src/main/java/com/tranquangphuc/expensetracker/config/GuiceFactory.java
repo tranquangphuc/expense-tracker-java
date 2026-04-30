@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.name.Names;
 import com.tranquangphuc.expensetracker.repository.ExpenseJsonRepository;
 import com.tranquangphuc.expensetracker.repository.ExpenseRepository;
 import com.tranquangphuc.expensetracker.service.ExpenseService;
@@ -28,6 +29,9 @@ public class GuiceFactory implements IFactory {
         @Override
         protected void configure() {
             bind(ObjectMapper.class).toInstance(new ObjectMapper());
+            bindConstant().annotatedWith(Names.named("data.file"))
+                    .to(System.getProperty("expense.tracker.data.file",
+                            System.getenv().getOrDefault("EXPENSE_TRACKER_DATA_FILE", "data.json")));
             bind(ExpenseRepository.class).to(ExpenseJsonRepository.class);
             bind(ExpenseService.class).to(ExpenseServiceImpl.class);
         }

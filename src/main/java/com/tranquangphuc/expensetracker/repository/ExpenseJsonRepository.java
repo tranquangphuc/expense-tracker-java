@@ -9,23 +9,25 @@ import java.util.List;
 import java.util.Optional;
 import com.tranquangphuc.expensetracker.model.Expense;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import tools.jackson.databind.ObjectMapper;
 
 public class ExpenseJsonRepository implements ExpenseRepository {
 
-    private static final Path DATA_FILE = Path.of("data.json");
+    private final Path dataFile;
 
     private ObjectMapper objectMapper;
 
-    private Data data = new Data();
+    private JsonData data = new JsonData();
 
     @Inject
-    public ExpenseJsonRepository(ObjectMapper objectMapper) {
+    public ExpenseJsonRepository(ObjectMapper objectMapper, @Named("data.file") String dataFilePath) {
         this.objectMapper = objectMapper;
-        if (Files.exists(DATA_FILE)) {
+        this.dataFile = Path.of(dataFilePath);
+        if (Files.exists(this.dataFile)) {
             try {
-                String json = Files.readString(DATA_FILE);
-                data = objectMapper.readValue(json, Data.class);
+                String json = Files.readString(this.dataFile);
+                data = objectMapper.readValue(json, JsonData.class);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to read data file", e);
             }
@@ -40,7 +42,7 @@ public class ExpenseJsonRepository implements ExpenseRepository {
     public void save() {
         try {
             String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
-            Files.writeString(DATA_FILE, json);
+            Files.writeString(dataFile, json);
         } catch (Exception e) {
             throw new RuntimeException("Failed to save data file", e);
         }
@@ -94,7 +96,7 @@ public class ExpenseJsonRepository implements ExpenseRepository {
         return Optional.ofNullable(toDelete);
     }
 
-    private static class Data {
+    private static class JsonData {
         public int nextId;
         public List<Expense> expenses;
     }
