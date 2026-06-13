@@ -1,7 +1,9 @@
 package com.tranquangphuc.expensetracker.command;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.tranquangphuc.expensetracker.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
@@ -27,7 +29,9 @@ public class SummaryCommand implements Runnable {
 
     @Override
     public void run() {
-        // Show per-category breakdown
+        int resolvedYear = year != null ? year : LocalDate.now().getYear();
+        int resolvedMonth = month != null ? month : LocalDate.now().getMonthValue();
+
         List<Expense> expenses = service.find(new ExpenseQuery(year, month, categories));
         Map<String, List<Expense>> expensesByCategory =
                 expenses.stream().collect(Collectors.groupingBy(Expense::getCategory));
@@ -47,6 +51,14 @@ public class SummaryCommand implements Runnable {
         }
         System.out.println("--------------------------------");
         System.out.printf("%-15s %8s $%7d%n", "TOTAL", "", grandTotal);
-    }
 
+        Optional<Long> budget = service.getMonthlyBudget(resolvedYear, resolvedMonth);
+        if (budget.isPresent()) {
+            System.out.printf("Monthly budget for %04d-%02d: $%d%n", resolvedYear, resolvedMonth, budget.get());
+        } else {
+            System.out.printf("Monthly budget for %04d-%02d: not set%n", resolvedYear, resolvedMonth);
+        }
+
+        service.getBudgetWarning(new ExpenseQuery(year, month, categories)).ifPresent(System.out::println);
+    }
 }

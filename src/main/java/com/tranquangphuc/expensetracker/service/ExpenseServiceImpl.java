@@ -44,4 +44,42 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenses.stream().mapToLong(Expense::getAmount).sum();
     }
 
+    @Override
+    public void setMonthlyBudget(int year, int month, long amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Budget amount must be non-negative");
+        }
+        repository.setMonthlyBudget(year, month, amount);
+    }
+
+    @Override
+    public Optional<Long> getMonthlyBudget(int year, int month) {
+        return repository.getMonthlyBudget(year, month);
+    }
+
+    @Override
+    public Optional<String> getBudgetWarning(ExpenseQuery query) {
+        if (query == null) {
+            query = new ExpenseQuery();
+        }
+
+        int resolvedYear = query.getYear() != null ? query.getYear() : LocalDate.now().getYear();
+        int resolvedMonth = query.getMonth() != null ? query.getMonth() : LocalDate.now().getMonthValue();
+        ExpenseQuery resolvedQuery = new ExpenseQuery(resolvedYear, resolvedMonth, query.getCategories());
+
+        Optional<Long> budget = getMonthlyBudget(resolvedYear, resolvedMonth);
+        if (budget.isEmpty()) {
+            return Optional.empty();
+        }
+
+        long spent = summary(resolvedQuery);
+        long overage = spent - budget.get();
+        if (overage > 0) {
+            return Optional.of(String.format(
+                    "Warning: monthly spending of $%d exceeds the budget of $%d by $%d.",
+                    spent, budget.get(), overage));
+        }
+
+        return Optional.empty();
+    }
 }

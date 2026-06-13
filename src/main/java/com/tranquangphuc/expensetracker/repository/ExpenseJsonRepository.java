@@ -5,7 +5,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import com.tranquangphuc.expensetracker.dto.ExpenseQuery;
 import com.tranquangphuc.expensetracker.model.Expense;
@@ -17,7 +19,7 @@ public class ExpenseJsonRepository implements ExpenseRepository {
 
     private final Path dataFile;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private JsonData data = new JsonData();
 
@@ -28,15 +30,31 @@ public class ExpenseJsonRepository implements ExpenseRepository {
         if (Files.exists(this.dataFile)) {
             try {
                 String json = Files.readString(this.dataFile);
-                data = objectMapper.readValue(json, JsonData.class);
+                if (json == null || json.isBlank()) {
+                    initializeEmptyData();
+                } else {
+                    data = objectMapper.readValue(json, JsonData.class);
+                }
             } catch (Exception e) {
                 throw new RuntimeException("Failed to read data file", e);
             }
         } else {
-            data.nextId = 1;
-            data.expenses = new ArrayList<>();
+            initializeEmptyData();
             save();
         }
+
+        if (data.expenses == null) {
+            data.expenses = new ArrayList<>();
+        }
+        if (data.monthlyBudgets == null) {
+            data.monthlyBudgets = new LinkedHashMap<>();
+        }
+    }
+
+    private void initializeEmptyData() {
+        data.nextId = 1;
+        data.expenses = new ArrayList<>();
+        data.monthlyBudgets = new LinkedHashMap<>();
     }
 
     @Override
@@ -107,8 +125,24 @@ public class ExpenseJsonRepository implements ExpenseRepository {
         return Optional.ofNullable(toDelete);
     }
 
+    @Override
+    public void setMonthlyBudget(int year, int month, long amount) {
+        data.monthlyBudgets.put(toBudgetKey(year, month), amount);
+        save();
+    }
+
+    @Override
+    public Optional<Long> getMonthlyBudget(int year, int month) {
+        return Optional.ofNullable(data.monthlyBudgets.get(toBudgetKey(year, month)));
+    }
+
+    private String toBudgetKey(int year, int month) {
+        return String.format("%04d-%02d", year, month);
+    }
+
     private static class JsonData {
         public int nextId;
         public List<Expense> expenses;
+        public Map<String, Long> monthlyBudgets = new LinkedHashMap<>();
     }
 }

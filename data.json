@@ -89,6 +89,16 @@
     "date" : "2026-04-02",
     "description" : "Refueling motorbike",
     "id" : 16
+  }, {
+    "amount" : 100,
+    "category" : "Other",
+    "date" : "2026-06-13",
+    "description" : "Breakfast",
+    "id" : 17
   } ],
-  "nextId" : 17
+  "monthlyBudgets" : {
+    "2026-06" : 1200,
+    "2026-04" : 1000
+  },
+  "nextId" : 18
 }

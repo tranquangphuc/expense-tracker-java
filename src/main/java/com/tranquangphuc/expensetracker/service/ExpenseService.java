@@ -13,4 +13,10 @@ public interface ExpenseService {
     Optional<Expense> delete(int id);
 
     long summary(ExpenseQuery query);
+
+    void setMonthlyBudget(int year, int month, long amount);
+
+    Optional<Long> getMonthlyBudget(int year, int month);
+
+    Optional<String> getBudgetWarning(ExpenseQuery query);
 }

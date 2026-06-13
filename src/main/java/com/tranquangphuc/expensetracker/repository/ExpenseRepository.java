@@ -13,4 +13,8 @@ public interface ExpenseRepository {
     Expense add(Expense expense);
 
     Optional<Expense> delete(int id);
+
+    void setMonthlyBudget(int year, int month, long amount);
+
+    Optional<Long> getMonthlyBudget(int year, int month);
 }
