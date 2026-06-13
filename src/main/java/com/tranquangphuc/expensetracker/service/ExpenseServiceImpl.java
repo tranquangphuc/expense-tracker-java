@@ -1,6 +1,10 @@
 package com.tranquangphuc.expensetracker.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,6 +46,43 @@ public class ExpenseServiceImpl implements ExpenseService {
     public long summary(ExpenseQuery query) {
         List<Expense> expenses = find(query);
         return expenses.stream().mapToLong(Expense::getAmount).sum();
+    }
+
+    @Override
+    public int exportToCsv(Path file, ExpenseQuery query) throws IOException {
+        Objects.requireNonNull(file, "CSV file path must not be null");
+
+        Path resolvedPath = file.toAbsolutePath().normalize();
+        Path parent = resolvedPath.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
+
+        List<Expense> expenses = find(query);
+        StringBuilder csv = new StringBuilder();
+        csv.append("id,date,description,amount,category").append(System.lineSeparator());
+        for (Expense expense : expenses) {
+            csv.append(escapeCsv(String.valueOf(expense.getId()))).append(',')
+                    .append(escapeCsv(expense.getDate() == null ? "" : expense.getDate().toString())).append(',')
+                    .append(escapeCsv(expense.getDescription())).append(',')
+                    .append(escapeCsv(String.valueOf(expense.getAmount()))).append(',')
+                    .append(escapeCsv(expense.getCategory())).append(System.lineSeparator());
+        }
+
+        Files.writeString(resolvedPath, csv);
+        return expenses.size();
+    }
+
+    private String escapeCsv(String value) {
+        if (value == null) {
+            return "";
+        }
+
+        String escaped = value.replace("\"", "\"\"");
+        if (escaped.contains(",") || escaped.contains("\"") || escaped.contains("\n") || escaped.contains("\r")) {
+            return '"' + escaped + '"';
+        }
+        return escaped;
     }
 
     @Override

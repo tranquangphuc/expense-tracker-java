@@ -81,7 +81,7 @@ public class ExpenseJsonRepository implements ExpenseRepository {
                 .filter(expense -> matchesAnyCategory(expense, categories))
                 .filter(expense -> year == null || (expense.getDate() != null && expense.getDate().getYear() == year))
                 .filter(expense -> month == null || (expense.getDate() != null && expense.getDate().getMonthValue() == month))
-                .sorted(Comparator.comparing(Expense::getDate)).toList();
+                .sorted(Comparator.comparing(Expense::getDate).thenComparing(Expense::getId)).toList();
         return result;
     }
 

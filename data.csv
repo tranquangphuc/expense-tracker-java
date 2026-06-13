@@ -1,0 +1,17 @@
+id,date,description,amount,category
+3,2020-02-15,Dinner with T,50,Other
+1,2026-02-04,Buy ticket,10,Other
+4,2026-02-04,How are you today,100,Other
+16,2026-04-02,Refueling motorbike,2,Petrol
+5,2026-04-30,Pho 24h,5,Other
+6,2026-04-30,Starbuck,4,Other
+7,2026-04-30,Lunch at restaurant,2500,Food
+8,2026-04-30,Lunch,1500,Food
+9,2026-04-30,Bus ticket,500,Transport
+10,2026-04-30,Coffee,300,Other
+11,2026-04-30,Movie ticket,200,Entertainment
+12,2026-04-30,Refueling the motorbike,5,Petro
+13,2026-04-30,Inflating tires,1,Other
+14,2026-04-30,Street coffee,1,Other
+15,2026-04-30,Washing motorbike,2,Bike
+17,2026-06-13,Breakfast,100,Other

@@ -1,5 +1,7 @@
 package com.tranquangphuc.expensetracker.service;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import com.tranquangphuc.expensetracker.dto.ExpenseQuery;
@@ -13,6 +15,8 @@ public interface ExpenseService {
     Optional<Expense> delete(int id);
 
     long summary(ExpenseQuery query);
+
+    int exportToCsv(Path file, ExpenseQuery query) throws IOException;
 
     void setMonthlyBudget(int year, int month, long amount);
 
